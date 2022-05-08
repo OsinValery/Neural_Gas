@@ -1,0 +1,158 @@
+
+<MyLabel@Label>:
+    text: ""
+    color: [0,0,1,1]
+    text_size: root.width, None
+    size: self.texture_size
+
+
+<RightWidget>:
+    BoxLayout:
+        orientation:'vertical'
+        spacing:0
+        size: root.size
+        pos: root.pos
+
+        GridLayout:
+            cols: 1
+            spacing: 0
+            padding: [5,20,0,20]
+
+            MyLabel:
+                text: "Статус : {} \nИтераций: {}".format(root.status,root.step)
+            MyLabel:
+                text: "Некоторые гиперпараметры:"            
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "Нейронов: {} / ".format(root.neurons)
+                TextInput:
+                    disabled: root.disable
+                    text: root.max_neurons
+                    multiline: False
+                    input_filter: "int"
+                    id: neurons
+                    on_text: root.change_neurons_max()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "В начале"
+                TextInput:
+                    disabled: root.disable
+                    text: root.init_neurons
+                    multiline: False
+                    input_filter: "int"
+                    id: init_neurons
+                    on_text: root.change_init_neurons()
+            GridLayout:
+                cols: 2
+            
+                MyLabel:
+                    text: "Эпоха: {} / ".format(root.epoch)
+                TextInput:
+                    disabled: root.disable
+                    text: root.epochs
+                    multiline: False
+                    input_filter: "int"
+                    id: epochs
+                    on_text: root.change_epochs_max()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "Max возраст связи: "
+                TextInput:
+                    disabled: root.disable
+                    text: root.max_connection_age
+                    multiline: False
+                    input_filter: "int"
+                    id: age
+                    on_text: root.change_age_max()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "Создавать через n шагов нейрон"
+                TextInput:
+                    disabled: root.disable
+                    text: root.birth_step
+                    multiline: False
+                    input_filter: "int"
+                    id: birth_count
+                    on_text: root.neurons_birth()
+            MyLabel:
+                text: "Двигать на долю от расстояния:"
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "   Победителя : "
+                TextInput:
+                    disabled: root.disable
+                    text: root.winner_step
+                    multiline: False
+                    input_filter: "float"
+                    id: winner_step
+                    on_text: root.change_vinner_step()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "   Соседа : "
+                TextInput:
+                    disabled: root.disable
+                    text: root.neighbour_step
+                    multiline: False
+                    input_filter: "float"
+                    id: neighbour_step
+                    on_text: root.change_neighbour_step()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "Уменьшать ошибку в n раз"
+                TextInput:
+                    disabled: root.disable
+                    text: root.d_error
+                    multiline: False
+                    input_filter: "float"
+                    id: d_error
+                    on_text: root.change_d_error()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: "При создании нейрона: "
+                TextInput:
+                    disabled: root.disable
+                    text: root.birth_error
+                    multiline: False
+                    input_filter: "float"
+                    id: birth_error
+                    on_text: root.change_birth_error()
+            GridLayout:
+                cols: 2
+
+                MyLabel:
+                    text: 'Стареют связи' 
+
+                Spinner:
+                    disabled: root.disable
+                    text: 'Neighbours' if not root.inc_all_connections else "All"
+                    values: 'Neighbours', 'All'
+                    on_text:
+                        root.change_oldness(self.text)
+
+        Button:
+            text: 'reset'
+            on_press : root.reset_model()
+            size_hint_y : 0.08
+            disabled: root.disable
+
+        Button:
+            text:'Start'
+            on_press :root.educate()
+            size_hint_y : 0.08
+            disabled: root.disable
