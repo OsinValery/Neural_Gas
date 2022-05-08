@@ -1,4 +1,3 @@
-from faulthandler import disable
 import random
 import gas
 from kivy.app import App
