@@ -1,4 +1,5 @@
 
+import random
 from kivy.uix.widget import Widget
 from kivy.graphics import Line, Point, Color
 from kivy.properties import StringProperty, BooleanProperty, NumericProperty
@@ -30,7 +31,7 @@ class DataPresenter(Widget):
         if diameter > self.size[0] / 2:
             self.scale = self.size[0] / 2 / diameter
 
-    def build(self, gas, data):
+    def build(self, gas, data, show_classes = False):
         self.canvas.clear()
         with self.canvas:
             Color(0,0,0, 0.5)
@@ -65,14 +66,31 @@ class DataPresenter(Widget):
                 width = 1.5
             ))
         
-        # draw neurons
-        points = []
-        for neuron in gas.neurons:
-            x,y = neuron.pos
-            points += [self.size[0] / 2 + x * self.scale, self.size[1] / 2 + y * self.scale]
-        with self.canvas:
-            Color(1,0,0,1)
-            Point(points=points, pointsize=2.5) 
+        if not show_classes:
+            # draw neurons
+            points = []
+            for neuron in gas.neurons:
+                x,y = neuron.pos
+                points += [self.size[0] / 2 + x * self.scale, self.size[1] / 2 + y * self.scale]
+            with self.canvas:
+                Color(1,0,0,1)
+                Point(points=points, pointsize=2.5) 
+        else:
+            # draw classes
+            classes = gas.divide_by_classes()
+            for group in classes:
+                points = []
+                color = [random.random(), random.random(), random.random(), 1]
+
+                for neuron in group:
+                    x,y = neuron.pos
+                    points += [self.size[0] / 2 + x * self.scale, self.size[1] / 2 + y * self.scale]
+
+                with self.canvas:
+                    Color(*color)
+                    Point(points=points, pointsize=4) 
+
+                
 
 
 

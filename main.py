@@ -9,8 +9,8 @@ from kivy.clock import Clock
 from kivy.utils import platform
 from widgets import *
 
-window_height = 500
-menu_width = 250
+window_height = 1200
+menu_width = 500
 
 
 interactive_step = 100
@@ -24,11 +24,20 @@ data = []
 
 # fill data here
 
-n = 2 ** 16
+dR = 10
+R = (50, 100, 170, 250)
 
-side = 150
+n = 50_000
+max_R = max(R) + dR * 2;
+
 for i in range(n):
-    data.append((random.uniform(-side,side), random.uniform(-side,side)))
+    x = random.randint(-max_R, max_R)
+    y = random.randint(-max_R, max_R)
+    
+    r_R = (x ** 2 + y ** 2) ** 0.5
+    for r in R:
+        if (abs(r-r_R) <= dR):
+            data.append([x,y])
 
 # default values
 max_neurons = 50
@@ -104,7 +113,7 @@ class Education(Screen):
         self.dataPresenter.size = [self.size[1]] * 2
         self.rightMenu.size =  [menu_width, self.size[1]] 
         self.rightMenu.build(epoch,epochs,step,status)
-        self.dataPresenter.build(Gas, data)
+        self.dataPresenter.build(Gas, data, show_classes=status=='finished')
         self.add_widget(self.dataPresenter)
         self.add_widget(self.rightMenu)
     
