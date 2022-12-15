@@ -249,6 +249,9 @@ class Neural_Gas():
             random.shuffle(data)
             for point in data:
                 self.educate_for_one_point(point)
+                if len(self.neurons) < 2:
+                    print("neurons died")
+                    return
     
     # api
     # эквивалентен методу educate
@@ -281,7 +284,9 @@ class Neural_Gas():
                 self.educate_for_one_point(point)
                 if self.step % itetation_step == 0:
                     yield ep, self.step
-
+                if len(self.neurons) < 2:
+                    print("neurons died")
+                    return
     # api
     # сбрасывает прогресс обучеиния (НО НЕ ПАРАМЕТРЫ)
     # НЕ ВЫЗЫВАЙТЕ ВО ВРЕМЯ ОБУЧЕНИЯ !!!!!

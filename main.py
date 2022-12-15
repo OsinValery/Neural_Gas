@@ -1,4 +1,5 @@
 import random
+import math
 import gas
 from kivy.app import App
 from kivy.uix.screenmanager import Screen
@@ -22,22 +23,13 @@ time_per_step = 0.05
 
 data = []
 
+for x in range(-100, 100):
+    for y in range(-100, 100):
+        data.append([x*5,y*5])
+
 # fill data here
 
-dR = 10
-R = (50, 100, 170, 250)
 
-n = 50_000
-max_R = max(R) + dR * 2;
-
-for i in range(n):
-    x = random.randint(-max_R, max_R)
-    y = random.randint(-max_R, max_R)
-    
-    r_R = (x ** 2 + y ** 2) ** 0.5
-    for r in R:
-        if (abs(r-r_R) <= dR):
-            data.append([x,y])
 
 # default values
 max_neurons = 50
